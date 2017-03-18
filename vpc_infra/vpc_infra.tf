@@ -35,25 +35,25 @@ output "subnet_private_c" {
 module "vpc" {
   cidr_block = "${var.cidr_block}"
   vpc_name   = "${var.vpc_name}"
-  source     = "../vpc"
+  source     = "github.com/Trility/tf-aws-modules//vpc"
 }
 
 module "route_table_public" {
   vpc_id  = "${module.vpc.vpc_id}"
   rt_name = "${var.vpc_name}-public"
-  source  = "../route_table"
+  source  = "github.com/Trility/tf-aws-modules//route_table"
 }
 
 module "route_table_private" {
   vpc_id  = "${module.vpc.vpc_id}"
   rt_name = "${var.vpc_name}-private"
-  source  = "../route_table"
+  source  = "github.com/Trility/tf-aws-modules//route_table"
 }
 
 module "igw" {
   vpc_id   = "${module.vpc.vpc_id}"
   igw_name = "${var.vpc_name}"
-  source   = "../internet_gateway"
+  source   = "github.com/Trility/tf-aws-modules//internet_gateway"
 }
 
 module "subnet_public_a" {
@@ -61,7 +61,7 @@ module "subnet_public_a" {
   subnet_name       = "${var.vpc_name}-public-aza"
   subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.2.0/24"
   availability_zone = "${var.aws_region}a"
-  source            = "../subnet"
+  source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "subnet_public_b" {
@@ -69,7 +69,7 @@ module "subnet_public_b" {
   subnet_name       = "${var.vpc_name}-public-azb"
   subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.4.0/24"
   availability_zone = "${var.aws_region}b"
-  source            = "../subnet"
+  source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "subnet_public_c" {
@@ -77,7 +77,7 @@ module "subnet_public_c" {
   subnet_name       = "${var.vpc_name}-public-azc"
   subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.6.0/24"
   availability_zone = "${var.aws_region}c"
-  source            = "../subnet"
+  source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "subnet_private_a" {
@@ -85,7 +85,7 @@ module "subnet_private_a" {
   subnet_name       = "${var.vpc_name}-private-aza"
   subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.1.0/24"
   availability_zone = "${var.aws_region}a"
-  source            = "../subnet"
+  source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "subnet_private_b" {
@@ -93,7 +93,7 @@ module "subnet_private_b" {
   subnet_name       = "${var.vpc_name}-private-azb"
   subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.3.0/24"
   availability_zone = "${var.aws_region}b"
-  source            = "../subnet"
+  source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "subnet_private_c" {
@@ -101,80 +101,80 @@ module "subnet_private_c" {
   subnet_name       = "${var.vpc_name}-private-azc"
   subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.5.0/24"
   availability_zone = "${var.aws_region}c"
-  source            = "../subnet"
+  source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "route_table_association_public_aza" {
   subnet_id      = "${module.subnet_public_a.subnet_id}"
   route_table_id = "${module.route_table_public.route_table_id}"
-  source         = "../route_table_association"
+  source         = "github.com/Trility/tf-aws-modules//route_table_association"
 }
 
 module "route_table_association_public_azb" {
   subnet_id      = "${module.subnet_public_b.subnet_id}"
   route_table_id = "${module.route_table_public.route_table_id}"
-  source         = "../route_table_association"
+  source         = "github.com/Trility/tf-aws-modules//route_table_association"
 }
 
 module "route_table_association_public_azc" {
   subnet_id      = "${module.subnet_public_c.subnet_id}"
   route_table_id = "${module.route_table_public.route_table_id}"
-  source         = "../route_table_association"
+  source         = "github.com/Trility/tf-aws-modules//route_table_association"
 }
 
 module "route_table_association_private_aza" {
   subnet_id      = "${module.subnet_private_a.subnet_id}"
   route_table_id = "${module.route_table_private.route_table_id}"
-  source         = "../route_table_association"
+  source         = "github.com/Trility/tf-aws-modules//route_table_association"
 }
 
 module "route_table_association_private_azb" {
   subnet_id      = "${module.subnet_private_b.subnet_id}"
   route_table_id = "${module.route_table_private.route_table_id}"
-  source         = "../route_table_association"
+  source         = "github.com/Trility/tf-aws-modules//route_table_association"
 }
 
 module "route_table_association_private_azc" {
   subnet_id      = "${module.subnet_private_c.subnet_id}"
   route_table_id = "${module.route_table_private.route_table_id}"
-  source         = "../route_table_association"
+  source         = "github.com/Trility/tf-aws-modules//route_table_association"
 }
 
 module "eip_nat" {
-  source = "../eip"
+  source = "github.com/Trility/tf-aws-modules//eip"
 }
 
 module "nat_private" {
   allocation_id = "${module.eip_nat.eip_id}"
   subnet_id     = "${module.subnet_private_a.subnet_id}"
-  source        = "../nat_gateway"
+  source        = "github.com/Trility/tf-aws-modules//nat_gateway"
 }
 
 module "vpc_s3_endpoint" {
   vpc_id          = "${module.vpc.vpc_id}"
   route_table_ids = ["${module.route_table_public.route_table_id}", "${module.route_table_private.route_table_id}"]
-  source          = "../vpc_endpoint"
+  source          = "github.com/Trility/tf-aws-modules//vpc_endpoint"
 }
 
 module "route_igw" {
   route_table_id         = "${module.route_table_public.route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   gw_id                  = "${module.igw.igw_id}"
-  source                 = "../route_gw"
+  source                 = "github.com/Trility/tf-aws-modules//route_gw"
 }
 
 module "route_nat" {
   route_table_id         = "${module.route_table_private.route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   nat_gw_id              = "${module.nat_private.nat_id}"
-  source                 = "../route_nat"
+  source                 = "github.com/Trility/tf-aws-modules//route_nat"
 }
 
 module "sg_ssh" {
   group_name        = "${var.vpc_name}-ssh"
   group_description = "${var.vpc_name}-ssh"
   vpc_id            = "${module.vpc.vpc_id}"
-  source            = "../sg"
+  source            = "github.com/Trility/tf-aws-modules//sg"
 }
 
 module "sg_ssh_rule" {
@@ -183,7 +183,7 @@ module "sg_ssh_rule" {
   to_port     = 22
   cidr_blocks = ["${var.cidr_block}"]
   sg_id       = "${module.sg_ssh.sg_id}"
-  source      = "../sg_rule_cidr"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
 
 module "sg_ssh_egress" {
@@ -192,14 +192,14 @@ module "sg_ssh_egress" {
   to_port     = 65535
   cidr_blocks = ["0.0.0.0/0"]
   sg_id       = "${module.sg_ssh.sg_id}"
-  source      = "../sg_rule_cidr"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
 
 module "sg_rdp" {
   group_name        = "${var.vpc_name}-rdp"
   group_description = "${var.vpc_name}-rdp"
   vpc_id            = "${module.vpc.vpc_id}"
-  source            = "../sg"
+  source            = "github.com/Trility/tf-aws-modules//sg"
 }
 
 module "sg_rdp_rule" {
@@ -208,7 +208,7 @@ module "sg_rdp_rule" {
   to_port     = 3389
   cidr_blocks = ["${var.cidr_block}"]
   sg_id       = "${module.sg_rdp.sg_id}"
-  source      = "../sg_rule_cidr"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
 
 module "sg_rdp_egress" {
@@ -217,5 +217,5 @@ module "sg_rdp_egress" {
   to_port     = 65535
   cidr_blocks = ["0.0.0.0/0"]
   sg_id       = "${module.sg_rdp.sg_id}"
-  source      = "../sg_rule_cidr"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }

@@ -2,12 +2,12 @@ variable "account_name" {}
 
 module "config_bucket" {
   bucket_name = "${var.account_name}-config"
-  source      = "../s3_bucket_no_logging"
+  source      = "github.com/Trility/tf-aws-modules//s3_bucket_no_logging"
 }
 
 module "config_bucket_policy" {
   bucket_id = "${module.config_bucket.name}"
-  source    = "../s3_bucket_policy"
+  source    = "github.com/Trility/tf-aws-modules//s3_bucket_policy"
 
   s3_policy = <<POLICY
 {
@@ -29,14 +29,14 @@ module "config_bucket_policy" {
       "Effect": "Allow",
       "Principal": {
         "Service": [
-         "config.amazonaws.com"    
+         "config.amazonaws.com"
         ]
       },
       "Action": "s3:PutObject",
       "Resource": "arn:aws:s3:::${var.account_name}-config/*",
-      "Condition": { 
-        "StringEquals": { 
-          "s3:x-amz-acl": "bucket-owner-full-control" 
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": "bucket-owner-full-control"
         }
       }
     }
@@ -48,13 +48,13 @@ POLICY
 module "config_role" {
   role_name    = "config"
   role_service = "config"
-  source       = "../iam_role"
+  source       = "github.com/Trility/tf-aws-modules//iam_role"
 }
 
 module "config_policy" {
   policy_name        = "config"
   policy_description = "config"
-  source             = "../iam_policy"
+  source             = "github.com/Trility/tf-aws-modules//iam_policy"
 
   policy = <<POLICY
 {
@@ -78,7 +78,7 @@ POLICY
 module "config_role_attachment" {
   policy_arn = "${module.config_policy.policy_arn}"
   role_name  = "${module.config_role.role_name}"
-  source     = "../iam_role_policy_attachment"
+  source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
 resource "aws_config_delivery_channel" "channel" {

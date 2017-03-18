@@ -65,7 +65,7 @@ output "ecs_min_size" {
 module "iam_policy_ecs" {
   policy_name        = "${var.app_env}-${var.app_name}-ecs"
   policy_description = "${var.app_env}-${var.app_name}-ecs"
-  source             = "../iam_policy"
+  source             = "github.com/Trility/tf-aws-modules//iam_policy"
 
   policy = <<EOF
 {
@@ -87,30 +87,30 @@ EOF
 
 module "iam_role_ecs" {
   role_name = "${var.app_env}-${var.app_name}"
-  source    = "../iam_role"
+  source    = "github.com/Trility/tf-aws-modules//iam_role"
 }
 
 module "iam_role_policy_attachment_ecs" {
   role_name  = "${module.iam_role_ecs.role_name}"
   policy_arn = "${module.iam_policy_ecs.policy_arn}"
-  source     = "../iam_role_policy_attachment"
+  source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
 module "iam_role_policy_attachment_base" {
   role_name  = "${module.iam_role_ecs.role_name}"
   policy_arn = "${var.base_policy_arn}"
-  source     = "../iam_role_policy_attachment"
+  source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
 module "iam_instance_profile_ecs" {
   profile_name = "${var.app_env}-${var.app_name}"
   roles        = ["${module.iam_role_ecs.role_name}"]
-  source       = "../iam_instance_profile"
+  source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
 }
 
 module "ecs_cluster" {
   cluster_name = "${var.app_env}-${var.app_name}"
-  source       = "../ecs_cluster"
+  source       = "github.com/Trility/tf-aws-modules//ecs_cluster"
 }
 
 module "launch_config" {
@@ -126,7 +126,7 @@ module "launch_config" {
   launch_config_name   = "${var.app_env}-${var.app_name}"
   lc_env               = "${var.app_env}"
   security_groups      = ["${module.sg_ecs.sg_id}", "${var.sg_base}"]
-  source               = "../launch_configuration"
+  source               = "github.com/Trility/tf-aws-modules//launch_configuration"
 }
 
 resource "aws_cloudformation_stack" "asg" {
@@ -181,7 +181,7 @@ module "sg_ecs" {
   group_name        = "${var.app_env}-${var.app_name}"
   group_description = "${var.app_env}-${var.app_name}"
   vpc_id            = "${var.vpc_id}"
-  source            = "../sg"
+  source            = "github.com/Trility/tf-aws-modules//sg"
 }
 
 module "sg_ecs_ingress_cidr_rule" {
@@ -190,7 +190,7 @@ module "sg_ecs_ingress_cidr_rule" {
   to_port     = 9999
   cidr_blocks = ["${var.infra_cidr_block}", "${var.vpc_cidr_block}"]
   sg_id       = "${module.sg_ecs.sg_id}"
-  source      = "../sg_rule_cidr"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
 
 module "sg_ecs_3000_ingress_cidr_rule" {
@@ -199,7 +199,7 @@ module "sg_ecs_3000_ingress_cidr_rule" {
   to_port     = 3000
   cidr_blocks = ["${var.infra_cidr_block}", "${var.vpc_cidr_block}"]
   sg_id       = "${module.sg_ecs.sg_id}"
-  source      = "../sg_rule_cidr"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
 
 module "sg_ecs_egress_cidr_rule" {
@@ -208,5 +208,5 @@ module "sg_ecs_egress_cidr_rule" {
   to_port     = 9999
   cidr_blocks = ["${var.vpc_cidr_block}"]
   sg_id       = "${module.sg_ecs.sg_id}"
-  source      = "../sg_rule_cidr"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }

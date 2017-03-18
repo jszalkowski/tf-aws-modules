@@ -15,34 +15,34 @@ variable "super_admins" {
 }
 
 module "password_settings" {
-  source = "../iam_account_password_policy"
+  source = "github.com/Trility/tf-aws-modules//iam_account_password_policy"
 }
 
 module "iam_group_super_admins" {
   group_members = ["${var.super_admins}"]
   group_name    = "${var.account_name}_super_admins"
   policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
-  source        = "../../modules/iam_group"
+  source        = "github.com/Trility/tf-aws-modules//iam_group"
 }
 
 module "iam_group_admins" {
   group_members = ["${var.admins}"]
   group_name    = "${var.account_name}_admins"
   policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
-  source        = "../../modules/iam_group"
+  source        = "github.com/Trility/tf-aws-modules//iam_group"
 }
 
 module "iam_billing_admins" {
   group_members = ["${var.billing_admins}"]
   group_name    = "${var.account_name}_billing_admins"
   policy_arn    = "arn:aws:iam::aws:policy/job-function/Billing"
-  source        = "../../modules/iam_group"
+  source        = "github.com/Trility/tf-aws-modules//iam_group"
 }
 
 module "iam_policy_user_management" {
   policy_name        = "user_management"
   policy_description = "user_management"
-  source             = "../iam_policy"
+  source             = "github.com/Trility/tf-aws-modules//iam_policy"
 
   policy = <<EOF
 {
@@ -122,15 +122,15 @@ EOF
 module "attach_user_management_to_billing" {
   group      = "${module.iam_billing_admins.group_name}"
   policy_arn = "${module.iam_policy_user_management.policy_arn}"
-  source     = "../iam_group_policy_attachment"
+  source     = "github.com/Trility/tf-aws-modules//iam_group_policy_attachment"
 }
 
 module "cloudtrail" {
   account_name = "${var.account_name}"
-  source       = "../cloudtrail"
+  source       = "github.com/Trility/tf-aws-modules//cloudtrail"
 }
 
 module "config" {
   account_name = "${var.account_name}"
-  source       = "../config"
+  source       = "github.com/Trility/tf-aws-modules//config"
 }

@@ -2,12 +2,12 @@ variable "account_name" {}
 
 module "cloudtrail_bucket" {
   bucket_name = "${var.account_name}-cloudtrail"
-  source      = "../s3_bucket_no_logging"
+  source      = "github.com/Trility/tf-aws-modules//s3_bucket_no_logging"
 }
 
 module "cloudtrail_bucket_policy" {
   bucket_id = "${module.cloudtrail_bucket.name}"
-  source    = "../s3_bucket_policy"
+  source    = "github.com/Trility/tf-aws-modules//s3_bucket_policy"
 
   s3_policy = <<POLICY
 {

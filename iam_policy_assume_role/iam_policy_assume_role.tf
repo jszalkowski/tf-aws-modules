@@ -27,5 +27,5 @@ module "iam_policy_assume_role" {
     "Version": "2012-10-17"
 }
 EOF
-    source             = "../iam_policy"
+    source             = "github.com/Trility/tf-aws-modules//iam_policy"
 }
