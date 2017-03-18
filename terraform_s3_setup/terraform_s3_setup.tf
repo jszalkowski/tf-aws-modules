@@ -16,7 +16,7 @@ module "terraform-s3" {
   bucket_name    = "${var.account_name}-terraform"
   logging_prefix = "${var.account_name}-terraform/"
   source         = "github.com/Trility/tf-aws-modules//s3_bucket"
-  depends_on     = ["module.logs-s3"]
+  /*depends_on     = ["module.logs-s3"]*/
 }
 
 module "terraform-s3-policy" {
