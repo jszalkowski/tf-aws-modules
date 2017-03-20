@@ -1,7 +1,10 @@
-before_install:
-        - curl -fSL "https://releases.hashicorp.com/terraform/0.9.1/terraform_0.9.1_linux_amd64.zip" -o terraform.zip
-  - sudo unzip terraform.zip -d /opt/terraform
-  - sudo ln -s /opt/terraform/terraform /usr/bin/terraform
-  - rm -f terraform.zip
+language: go
+
+go:
+  - 1.8.x
+
+install:
+  - go get github.com/hashicorp/terraform
+
 script:
   ./validate-tf-modules.sh
