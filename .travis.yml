@@ -1,0 +1,10 @@
+language: go
+
+go:
+  - 1.8.x
+
+install:
+  - go get github.com/hashicorp/terraform
+
+script:
+  ./validate-tf-modules.sh
