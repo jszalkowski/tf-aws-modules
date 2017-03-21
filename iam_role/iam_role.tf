@@ -1,5 +1,9 @@
 variable "role_name" {}
 
+variable "role_path" {
+  default = "/"
+}
+
 variable "role_service" {
   default = "ec2"
 }
@@ -14,6 +18,7 @@ output "role_arn" {
 
 resource "aws_iam_role" "role" {
   name = "${var.role_name}"
+  path = "${var.role_path}"
 
   assume_role_policy = <<EOF
 {
