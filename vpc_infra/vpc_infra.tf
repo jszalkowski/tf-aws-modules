@@ -57,26 +57,29 @@ module "igw" {
 }
 
 module "subnet_public_a" {
-  vpc_id            = "${module.vpc.vpc_id}"
-  subnet_name       = "${var.vpc_name}-public-aza"
-  subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.2.0/24"
   availability_zone = "${var.aws_region}a"
+  map_public_ip     = true
+  subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.2.0/24"
+  subnet_name       = "${var.vpc_name}-public-aza"
+  vpc_id            = "${module.vpc.vpc_id}"
   source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "subnet_public_b" {
-  vpc_id            = "${module.vpc.vpc_id}"
-  subnet_name       = "${var.vpc_name}-public-azb"
-  subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.4.0/24"
   availability_zone = "${var.aws_region}b"
+  subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.4.0/24"
+  subnet_name       = "${var.vpc_name}-public-azb"
+  map_public_ip     = true
+  vpc_id            = "${module.vpc.vpc_id}"
   source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
 module "subnet_public_c" {
-  vpc_id            = "${module.vpc.vpc_id}"
-  subnet_name       = "${var.vpc_name}-public-azc"
-  subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.6.0/24"
   availability_zone = "${var.aws_region}c"
+  subnet_cidr_block = "${var.vpc_first_octet}.${var.vpc_second_octet}.6.0/24"
+  subnet_name       = "${var.vpc_name}-public-azc"
+  map_public_ip     = true
+  vpc_id            = "${module.vpc.vpc_id}"
   source            = "github.com/Trility/tf-aws-modules//subnet"
 }
 
