@@ -1,3 +1,9 @@
+data "aws_ip_ranges" "ec2" {
+  regions  = ["${var.aws_region}"]
+  services = ["ec2"]
+}
+
+variable "aws_region" {}
 variable "vpc" {}
 
 module "iam_role_opsworks_cm_ec2" {
@@ -48,7 +54,7 @@ module "sg_opsworks_cm_ingress_cidr_rule" {
   rule_type   = "ingress"
   from_port   = 443
   to_port     = 443
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = ["${data.aws_ip_ranges.ec2.cidr_blocks}"]
   sg_id       = "${module.sg_opsworks_cm.sg_id}"
   source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
