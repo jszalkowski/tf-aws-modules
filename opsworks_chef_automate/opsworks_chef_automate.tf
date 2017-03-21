@@ -1,7 +1,7 @@
 variable "vpc" {}
 
 module "iam_role_opsworks_cm_ec2" {
-  role_name = "opsworks-cm-ec2"
+  role_name = "aws-opsworks-cm-ec2"
   role_path = "/service-role/"
   source    = "github.com/Trility/tf-aws-modules//iam_role"
 }
@@ -19,13 +19,13 @@ module "iam_role_policy_attachment_s3" {
 }
 
 module "iam_instance_profile_opsworks_cm" {
-  profile_name = "opsworks-cm-ec2"
+  profile_name = "aws-opsworks-cm-ec2"
   roles        = ["${module.iam_role_opsworks_cm_ec2.role_name}"]
   source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
 }
 
 module "iam_role_opsworks_service" {
-  role_name    = "opsworks-cm-service"
+  role_name    = "aws-opsworks-cm-service"
   role_path    = "/service-role/"
   role_service = "opsworks-cm"
   source       = "github.com/Trility/tf-aws-modules//iam_role"
