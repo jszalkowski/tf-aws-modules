@@ -1,7 +1,7 @@
 variable "availability_zone" {}
 
 variable "map_public_ip" {
-  default = false
+  default = "false"
 }
 
 variable "subnet_cidr_block" {}
