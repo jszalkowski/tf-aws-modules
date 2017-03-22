@@ -1,7 +1,7 @@
 data "aws_security_group" "ssh" {
   filter {
     name   = "tag:Name"
-    values = ["infra_ssh"]
+    values = ["infra-ssh"]
   }
 }
 
