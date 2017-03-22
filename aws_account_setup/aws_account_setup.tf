@@ -134,3 +134,10 @@ module "config" {
   account_name = "${var.account_name}"
   source       = "github.com/Trility/tf-aws-modules//config"
 }
+
+module "backup_bucket" {
+  bucket_logging = "${var.account_name}-logs-s3"
+  bucket_name    = "${var.account_name}-backups"
+  logging_prefix = "${var.account_name}-backups/"
+  source         = "github.com/Trility/tf-aws-modules//s3_bucket"
+}

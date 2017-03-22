@@ -1,28 +1,18 @@
-variable "ami_id" {}
+variable "account_name" {}
 
-variable "aws_instance_profile" {}
+variable "ami_id" {}
 
 variable "aws_keypair" {}
 
-variable "aws_region" {
-  default = "us-west-2"
-}
+variable "aws_region" {}
 
-variable "chef_policy" {
-  default = "infra_testing"
-}
+variable "chef_policy" {}
 
-variable "chef_policy_group" {
-  default = "infra_testing"
-}
+variable "chef_policy_group" {}
 
-variable "chef_server" {
-  default = "test-chef-server02"
-}
+variable "chef_server" {}
 
-variable "chef_server_url" {
-  default = "https://test-chef-server02-5lglrdtega90jrm0.us-west-2.opsworks-cm.io/organizations/default"
-}
+variable "chef_server_url" {}
 
 variable "ebs_root_size" {
   default = 50
@@ -30,11 +20,15 @@ variable "ebs_root_size" {
 
 variable "instance_name" {}
 
+variable "instance_profile" {}
+
 variable "instance_type" {}
 
 variable "lvm_opt_size" {
   default = 20
 }
+
+variable "lvm_snapshot_id" {}
 
 variable "lvm_var_size" {
   default = 20
@@ -63,40 +57,41 @@ variable "snapshots" {
 variable "subnet" {}
 
 variable "termination_protection" {
-  default = false
+  default = "false"
 }
 
 variable "vpc_security_group_ids" {
   type = "list"
 }
 
-provider "aws" {
-  region = "${var.aws_region}"
-}
-
 resource "aws_instance" "ec2_instance" {
-  ami = "${var.ami_id}"
+  ami                     = "${var.ami_id}"
   disable_api_termination = "${var.termination_protection}"
+
   root_block_device {
     delete_on_termination = true
-    volume_size = "${var.ebs_root_size}"
-    volume_type = "gp2"
+    volume_size           = "${var.ebs_root_size}"
+    volume_type           = "gp2"
   }
+
   ebs_block_device {
     delete_on_termination = true
-    device_name = "/dev/sdb"
-    snapshot_id = "snap-102f6534"
-    volume_size = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 10}"
-    volume_type = "gp2"
+    device_name           = "/dev/sdb"
+    snapshot_id           = "${var.lvm_snapshot_id}"
+    volume_size           = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 10}"
+    volume_type           = "gp2"
   }
-  key_name = "${var.aws_keypair}"
-  iam_instance_profile  = "${var.aws_instance_profile}"
-  instance_type = "${var.instance_type}"
-  subnet_id  = "${var.subnet}"
+
+  key_name             = "${var.aws_keypair}"
+  iam_instance_profile = "${var.instance_profile}"
+  instance_type        = "${var.instance_type}"
+  subnet_id            = "${var.subnet}"
+
   tags {
-      Name = "${var.instance_name}"
-      Snapshots = "${var.snapshots}"
+    Name      = "${var.instance_name}"
+    Snapshots = "${var.snapshots}"
   }
+
   user_data = <<EOF
 #!/bin/bash -ex
 echo "/sbin/pvresize /dev/xvdb" >> /var/lib/cloud/instance/scripts/lvmresize
@@ -119,9 +114,9 @@ openssl genrsa -out /etc/chef/client.pem 2048
 aws opsworkscm associate-node --node-name ${var.instance_name} --server-name ${var.chef_server} --engine-attributes "Name=CHEF_ORGANIZATION,Value=default" "Name=CHEF_NODE_PUBLIC_KEY,Value='$(openssl rsa -in /etc/chef/client.pem -pubout)'" --region ${var.aws_region}
 mkdir /var/log/chef
 mkdir /etc/chef/trusted_certs
-aws --region ${var.aws_region} s3 cp s3://pithoslabs-chef/AWS_OpsWorks_Intermediate_CA_for_us-west-2_region.crt /etc/chef/trusted_certs/AWS_OpsWorks_Intermediate_CA_for_us-west-2_region.crt
-aws --region ${var.aws_region} s3 cp s3://pithoslabs-chef/AWS_OpsWorks_Root_CA.crt /etc/chef/trusted_certs/AWS_OpsWorks_Root_CA.crt
-aws --region ${var.aws_region} s3 cp s3://pithoslabs-chef/ /etc/chef/trusted_certs/opsworks-cm-ca-2016-root.pem
+aws --region ${var.aws_region} s3 cp s3://${var.account_name}-infra/AWS_OpsWorks_Intermediate_CA_for_us-west-2_region.crt /etc/chef/trusted_certs/AWS_OpsWorks_Intermediate_CA_for_us-west-2_region.crt
+aws --region ${var.aws_region} s3 cp s3://${var.account_name}-infra/AWS_OpsWorks_Root_CA.crt /etc/chef/trusted_certs/AWS_OpsWorks_Root_CA.crt
+aws --region ${var.aws_region} s3 cp s3://${var.account_name}-infra/ /etc/chef/trusted_certs/opsworks-cm-ca-2016-root.pem
 chmod 600 /etc/chef/trusted_certs/*
 echo "chef_server_url '${var.chef_server_url}'" >> /etc/chef/client.rb
 echo "trusted_certs_dir '/etc/chef/trusted_certs'" >> /etc/chef/client.rb
@@ -132,5 +127,6 @@ echo "log_location '/var/log/chef/client.log'" >> /etc/chef/client.rb
 echo "{\"policy_name\": \"${var.chef_policy}\", \"policy_group\": \"${var.chef_policy_group}\" }" >> /etc/chef/attributes.json
 chef-client -j /etc/chef/attributes.json
 EOF
-  vpc_security_group_ids = "${var.vpc_security_group_ids}"
+
+  vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
 }
