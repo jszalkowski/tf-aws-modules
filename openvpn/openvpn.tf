@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data "aws_security_group" "ssh" {
   filter {
     name   = "tag:Name"
@@ -88,6 +90,12 @@ module "iam_role_openvpn" {
 module "iam_role_openvpn_attach_policy" {
   role_name  = "${module.iam_role_openvpn.role_name}"
   policy_arn = "${module.iam_policy_openvpn.policy_arn}"
+  source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
+}
+
+module "iam_role_openvpn_attach_base_infra_policy" {
+  role_name  = "${module.iam_role_openvpn.role_name}"
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/base_infra"
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
