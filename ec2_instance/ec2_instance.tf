@@ -118,7 +118,7 @@ aws --region ${var.aws_region} s3 cp s3://${var.account_name}-infra/AWS_OpsWorks
 aws --region ${var.aws_region} s3 cp s3://${var.account_name}-infra/AWS_OpsWorks_Root_CA.crt /etc/chef/trusted_certs/AWS_OpsWorks_Root_CA.crt
 aws --region ${var.aws_region} s3 cp s3://${var.account_name}-infra/ /etc/chef/trusted_certs/opsworks-cm-ca-2016-root.pem
 chmod 600 /etc/chef/trusted_certs/*
-echo "chef_server_url '${var.chef_server_url}'" >> /etc/chef/client.rb
+echo "chef_server_url '${var.chef_server_url}/organizations/default'" >> /etc/chef/client.rb
 echo "trusted_certs_dir '/etc/chef/trusted_certs'" >> /etc/chef/client.rb
 echo "node_name '${var.instance_name}'" >> /etc/chef/client.rb
 echo "log_location   STDOUT" >> /etc/chef/client.rb
