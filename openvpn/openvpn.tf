@@ -95,7 +95,7 @@ module "iam_role_openvpn_attach_policy" {
 
 module "iam_role_openvpn_attach_base_infra_policy" {
   role_name  = "${module.iam_role_openvpn.role_name}"
-  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/base_infra"
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/base_infra"
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
@@ -121,6 +121,6 @@ module "ec2_openvpn" {
   snapshots              = "yes"
   subnet                 = "${var.subnet}"
   termination_protection = "true"
-  vpc_security_group_ids = ["${module.sg_openvpn.sg_id}", "${data.aws_security_group.ssh.name}"]
+  vpc_security_group_ids = ["${module.sg_openvpn.sg_id}", "${data.aws_security_group.ssh.id}"]
   source                 = "github.com/Trility/tf-aws-modules//ec2_instance"
 }
