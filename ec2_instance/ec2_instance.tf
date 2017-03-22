@@ -78,7 +78,7 @@ resource "aws_instance" "ec2_instance" {
     delete_on_termination = true
     device_name           = "/dev/sdb"
     snapshot_id           = "${var.lvm_snapshot_id}"
-    volume_size           = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 10}"
+    volume_size           = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 20}"
     volume_type           = "gp2"
   }
 
