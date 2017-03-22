@@ -18,6 +18,8 @@ variable "instance_type" {
   default = "t2.medium"
 }
 
+variable "lvm_snapshot_id" {}
+
 variable "subnet" {}
 variable "vpc" {}
 
@@ -107,6 +109,7 @@ module "ec2_openvpn" {
   instance_name          = "openvpn"
   instance_profile       = "${module.iam_instance_profile_openvpn.profile_name}"
   instance_type          = "${var.instance_type}"
+  lvm_snapshot_id        = "${var.lvm_snapshot_id}"
   snapshots              = "yes"
   subnet                 = "${var.subnet}"
   termination_protection = "true"
