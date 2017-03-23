@@ -47,6 +47,6 @@ resource "aws_launch_configuration" "launch_config" {
 
   user_data = <<EOF
 #!/bin/bash -ex
-##PROP-JSON##:{"app_class": "${var.app_name}","dsa_policy_name": "${var.ds_policy_name}","dsa_server": "${var.ids_server}","ecs_cluster": "${var.lc_env}-${var.app_name}","graphite_host": "${var.graphite_host}","jenkins_build": "${var.lc_env}","pithos_environment": "${var.env_short}","stack_name": "${var.lc_env}","app_class":"${var.app_name}"}
+##PROP-JSON##:{"app_class": "${var.app_name}","dsa_policy_name": "${var.ds_policy_name}","dsa_server": "${var.ids_server}","ecs_cluster": "${var.lc_env}-${var.app_name}","graphite_host": "${var.graphite_host}","jenkins_build": "${var.lc_env}","trility_environment": "${var.env_short}","stack_name": "${var.lc_env}","app_class":"${var.app_name}"}
 EOF
 }

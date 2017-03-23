@@ -19,7 +19,7 @@ variable "db_subnet_group_name" {}
 variable "master_password" {}
 
 variable "master_username" {
-  default = "pithosadmin"
+  default = "trilityadmin"
 }
 
 variable "preferred_backup_window" {
