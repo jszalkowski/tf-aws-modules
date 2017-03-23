@@ -149,7 +149,7 @@ module "eip_nat" {
 
 module "nat_private" {
   allocation_id = "${module.eip_nat.eip_id}"
-  subnet_id     = "${module.subnet_private_a.subnet_id}"
+  subnet_id     = "${module.subnet_public_a.subnet_id}"
   source        = "github.com/Trility/tf-aws-modules//nat_gateway"
 }
 
