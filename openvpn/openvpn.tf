@@ -49,6 +49,15 @@ module "sg_1194_udp_ingress" {
   source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
 
+module "sg_udp_egress" {
+  rule_type   = "egress"
+  from_port   = 0
+  to_port     = 65535
+  cidr_blocks = ["0.0.0.0/0"]
+  sg_id       = "${module.sg_openvpn.sg_id}"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
+}
+
 module "iam_policy_openvpn" {
   policy_name        = "openvpn"
   policy_description = "openvpn"
