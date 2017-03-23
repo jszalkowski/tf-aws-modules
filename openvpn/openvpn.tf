@@ -54,6 +54,7 @@ module "sg_udp_egress" {
   from_port   = 0
   to_port     = 65535
   cidr_blocks = ["0.0.0.0/0"]
+  protocol    = "udp"
   sg_id       = "${module.sg_openvpn.sg_id}"
   source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
