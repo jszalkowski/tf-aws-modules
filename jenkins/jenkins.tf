@@ -52,7 +52,7 @@ module "efs_jenkins" {
 }
 
 module "efs_mount_target_jenkins" {
-  file_system_id  = "${module.efs_jenkins.id}"
+  file_system_id  = "${module.efs_jenkins.filesystem_id}"
   security_groups = ["${module.sg_jenkins.sg_id}"]
   subnet_id       = "${var.subnet}"
   source          = "github.com/Trility/tf-aws-modules//efs_mount_target"
