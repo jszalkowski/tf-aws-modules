@@ -12,6 +12,10 @@ variable "subnet" {}
 variable "vpc" {}
 variable "vpc_cidr" {}
 
+output "instance_profile" {
+  value = "${module.iam_instance_profile_jenkins.profile_name}"
+}
+
 module "jenkins_bucket" {
   bucket_logging = "${var.account_name}-logs-s3"
   bucket_name    = "${var.account_name}-jenkins"
