@@ -14,6 +14,10 @@ variable "super_admins" {
   type = "list"
 }
 
+variable "developers" {
+  type = "list"
+}
+
 module "password_settings" {
   source = "github.com/Trility/tf-aws-modules//iam_account_password_policy"
 }
@@ -36,6 +40,13 @@ module "iam_billing_admins" {
   group_members = ["${var.billing_admins}"]
   group_name    = "${var.account_name}_billing_admins"
   policy_arn    = "arn:aws:iam::aws:policy/job-function/Billing"
+  source        = "github.com/Trility/tf-aws-modules//iam_group"
+}
+
+module "iam_group_developers" {
+  group_members = ["${var.developers}"]
+  group_name    = "${var.account_name}_developers"
+  policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
   source        = "github.com/Trility/tf-aws-modules//iam_group"
 }
 
