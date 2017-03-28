@@ -111,7 +111,7 @@ chmod +x /var/lib/cloud/instance/scripts/lvmresize
 /var/lib/cloud/instance/scripts/lvmresize
 mkdir /etc/chef
 openssl genrsa -out /etc/chef/client.pem 2048
-aws opsworkscm associate-node --node-name ${var.instance_name} --server-name ${var.chef_server} --engine-attributes "Name=CHEF_ORGANIZATION,Value=default" "Name=CHEF_NODE_PUBLIC_KEY,Value='$(openssl rsa -in /etc/chef/client.pem -pubout)'" --region ${var.aws_region}
+aws opsworkscm associate-node --node-name ${var.account_name}_${var.instance_name} --server-name ${var.chef_server} --engine-attributes "Name=CHEF_ORGANIZATION,Value=default" "Name=CHEF_NODE_PUBLIC_KEY,Value='$(openssl rsa -in /etc/chef/client.pem -pubout)'" --region ${var.aws_region}
 mkdir /var/log/chef
 mkdir /etc/chef/trusted_certs
 aws --region ${var.aws_region} s3 cp s3://${var.account_name}-infra/AWS_OpsWorks_Intermediate_CA_for_us-west-2_region.crt /etc/chef/trusted_certs/AWS_OpsWorks_Intermediate_CA_for_us-west-2_region.crt
