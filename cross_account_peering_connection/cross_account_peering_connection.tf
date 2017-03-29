@@ -30,21 +30,21 @@ module "local_vpc_peering_connection" {
 module "remote_vpc_accepter" {
   vpc_peering_connection_id = "${module.local_vpc_peering_connection.peering_id}"
   peering_connection_name = "${var.connection_name}"
-  source = "github.com/Trility/tf-aws-modules?ref=add_vpc_peering_conn_accepter//vpc_peering_connection_accepter"
+  source = "github.com/Trility/tf-aws-modules//vpc_peering_connection_accepter"
 }
 
 module "remote_route_public" {
   route_table_id = "${var.remote_public_route_table_id}"
   destination_cidr_block = "${var.local_cidr_block}"
   peering_id = "${module.local_vpc_peering_connection.peering_id}"
-  source = "github.com/Trility/tf-aws-modules?ref=add_vpc_peering_conn_accepter//route_peering_accepter"
+  source = "github.com/Trility/tf-aws-modules//route_peering_accepter"
 }
 
 module "remote_route_private" {
   route_table_id = "${var.remote_private_route_table_id}"
   destination_cidr_block = "${var.local_cidr_block}"
   peering_id = "${module.local_vpc_peering_connection.peering_id}"
-  source = "github.com/Trility/tf-aws-modules?ref=add_vpc_peering_conn_accepter//route_peering_accepter"
+  source = "github.com/Trility/tf-aws-modules//route_peering_accepter"
 }
 
 module "local_route_public" {
