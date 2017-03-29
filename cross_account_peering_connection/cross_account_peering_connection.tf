@@ -50,13 +50,13 @@ module "remote_route_private" {
 module "local_route_public" {
   route_table_id = "${var.local_public_route_table_id}"
   destination_cidr_block = "${var.remote_cidr_block}"
-  peering_id = "${module.trility_infra_vpc_connection.peering_id}"
+  peering_id = "${module.local_vpc_peering_connection.peering_id}"
   source = "github.com/Trility/tf-aws-modules//route_peering"
 }
 
 module "local_route_private" {
   route_table_id = "${var.local_private_route_table_id}"
   destination_cidr_block = "${var.remote_cidr_block}"
-  peering_id = "${module.trility_infra_vpc_connection.peering_id}"
+  peering_id = "${module.local_vpc_peering_connection.peering_id}"
   source = "github.com/Trility/tf-aws-modules//route_peering"
 }
