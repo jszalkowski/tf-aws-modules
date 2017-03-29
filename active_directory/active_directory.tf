@@ -45,7 +45,7 @@ module "ssm_document_join_domain" {
             "properties": {
                 "directoryId": "${module.ad.id}",
                 "directoryName": "${var.domain_name}",
-                "dnsIpAddresses": "${module.ad.dns_ip_addresses}"
+                "dnsIpAddresses": ["${module.ad.dns_ip_addresses}"]
             }
         }
     }
