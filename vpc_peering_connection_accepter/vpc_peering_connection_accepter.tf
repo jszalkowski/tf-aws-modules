@@ -1,4 +1,3 @@
-variable "provider_tag" {}
 variable "vpc_peering_connection_id" {}
 
 variable "auto_accept" {
