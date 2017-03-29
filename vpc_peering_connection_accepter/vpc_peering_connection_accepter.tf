@@ -8,7 +8,7 @@ variable "auto_accept" {
 variable "peering_connection_name" {}
 
 resource "aws_vpc_peering_connection_accepter" "peer" {
-  provider                  = "${var.provider_tag}"
+  provider                  = "aws.peer"
   vpc_peering_connection_id = "${var.vpc_peering_connection_id}"
   auto_accept               = "${var.auto_accept}"
 
