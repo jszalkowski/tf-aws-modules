@@ -28,6 +28,10 @@ variable "vpc_security_group_ids" {
   type = "list"
 }
 
+output "instance_id" {
+  value = "${aws_instance.ec2_instance.id}"
+}
+
 resource "aws_instance" "ec2_instance" {
   ami                     = "${var.ami_id}"
   disable_api_termination = "${var.termination_protection}"

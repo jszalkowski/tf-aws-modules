@@ -12,7 +12,10 @@ variable "subnets" {
 }
 
 variable "vpc" {}
-variable "vpc_security_group_ids" {}
+
+variable "vpc_security_group_ids" {
+  type = "list"
+}
 
 module "ad" {
   name     = "${var.domain_name}"
@@ -70,6 +73,12 @@ module "ec2_instance_windows" {
   instance_name          = "windows_ad"
   instance_profile       = "${module.iam_instance_profile_windows.profile_name}"
   subnet                 = "${var.subnet}"
-  vpc_security_group_ids = "${var.vpc_security_group_ids}"
+  vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
   source                 = "github.com/Trility/tf-aws-modules//ec2_instance_windows"
+}
+
+module "join_domain" {
+  ssm_document_name = "${module.ssm_document_join_domain.ssm_document_name}"
+  instance_id       = "${module.ec2_instance_windows.instance_id}"
+  source            = "github.com/Trility/tf-aws-modules//ssm_association"
 }
