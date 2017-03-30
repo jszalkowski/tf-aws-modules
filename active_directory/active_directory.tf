@@ -62,8 +62,7 @@ module "ssm_document_join_domain" {
 }
 DOC
 
-  source     = "github.com/Trility/tf-aws-modules//ssm_document"
-  depends_on = ["module.ad"]
+  source = "github.com/Trility/tf-aws-modules//ssm_document"
 }
 
 module "ec2_instance_windows" {
@@ -76,12 +75,10 @@ module "ec2_instance_windows" {
   subnet                 = "${var.subnet}"
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
   source                 = "github.com/Trility/tf-aws-modules//ec2_instance_windows"
-  depends_on             = ["module.ssm_document_join_domain"]
 }
 
 module "join_domain" {
   ssm_document_name = "${module.ssm_document_join_domain.ssm_document_name}"
   instance_id       = "${module.ec2_instance_windows.instance_id}"
   source            = "github.com/Trility/tf-aws-modules//ssm_association"
-  depends_on        = ["module.ec2_instance_windows"]
 }
