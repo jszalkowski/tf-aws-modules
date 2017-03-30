@@ -10,7 +10,9 @@ variable "instance_name" {}
 
 variable "instance_profile" {}
 
-variable "instance_type" {}
+variable "instance_type" {
+  default = "t2.medium"
+}
 
 variable "snapshots" {
   default = "no"

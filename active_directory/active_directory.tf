@@ -1,11 +1,18 @@
-variable "domain_name" {}
+variable "account_name" {}
 variable "ad_password" {}
+variable "ami_id" {}
+variable "aws_keypair" {}
+variable "aws_region" {}
+variable "domain_name" {}
+
+variable "subnet" {}
 
 variable "subnets" {
   type = "list"
 }
 
 variable "vpc" {}
+variable "vpc_security_group_ids" {}
 
 module "ad" {
   name     = "${var.domain_name}"
@@ -45,7 +52,7 @@ module "ssm_document_join_domain" {
             "properties": {
                 "directoryId": "${module.ad.id}",
                 "directoryName": "${var.domain_name}",
-                "dnsIpAddresses": ["${module.ad.dns_ip_addresses}"]
+                "dnsIpAddresses": ["${module.ad.dns_ip_addresses[0]}", "${module.ad.dns_ip_addresses[1]}"]
             }
         }
     }
@@ -53,4 +60,16 @@ module "ssm_document_join_domain" {
 DOC
 
   source = "github.com/Trility/tf-aws-modules//ssm_document"
+}
+
+module "ec2_instance_windows" {
+  account_name           = "${var.account_name}"
+  ami_id                 = "${var.ami_id}"
+  aws_keypair            = "${var.aws_keypair}"
+  aws_region             = "${var.aws_region}"
+  instance_name          = "windows_ad"
+  instance_profile       = "${module.iam_instance_profile_windows.profile_name}"
+  subnet                 = "${var.subnet}"
+  vpc_security_group_ids = "${var.vpc_security_group_ids}"
+  source                 = "github.com/Trility/tf-aws-modules//ec2_instance_windows"
 }
