@@ -3,6 +3,7 @@ variable "ad_password" {}
 variable "ami_id" {}
 variable "aws_keypair" {}
 variable "aws_region" {}
+variable "base_infra_policy" {}
 variable "domain_name" {}
 
 variable "subnet" {}
@@ -37,7 +38,7 @@ module "iam_role_policy_attachment_ssm" {
 }
 
 module "iam_role_policy_attachment_base" {
-  policy_arn = "arn:aws:iam::aws:policy/base_infra"
+  policy_arn = "${var.base_infra_policy}"
   role_name  = "${module.iam_role_windows.role_name}"
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
