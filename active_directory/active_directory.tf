@@ -36,6 +36,12 @@ module "iam_role_policy_attachment_ssm" {
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
+module "iam_role_policy_attachment_base" {
+  policy_arn = "arn:aws:iam::aws:policy/base_infra"
+  role_name  = "${module.iam_role_windows.role_name}"
+  source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
+}
+
 module "iam_instance_profile_windows" {
   profile_name = "windows"
   roles        = ["${module.iam_role_windows.role_name}"]
