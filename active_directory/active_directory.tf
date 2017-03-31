@@ -4,6 +4,7 @@ variable "ami_id" {}
 variable "aws_keypair" {}
 variable "aws_region" {}
 variable "base_infra_policy" {}
+variable "chef_server_url" {}
 variable "domain_name" {}
 
 variable "subnet" {}
@@ -77,6 +78,9 @@ module "ec2_instance_windows" {
   ami_id                 = "${var.ami_id}"
   aws_keypair            = "${var.aws_keypair}"
   aws_region             = "${var.aws_region}"
+  chef_policy            = "${var.account_name}_windows_ad"
+  chef_policy_group      = "windows_ad"
+  chef_server_url        = "${var.chef_server_url}"
   instance_name          = "windows_ad"
   instance_profile       = "${module.iam_instance_profile_windows.profile_name}"
   subnet                 = "${var.subnet}"
