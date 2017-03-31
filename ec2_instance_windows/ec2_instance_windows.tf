@@ -67,8 +67,9 @@ Add-Content C:\chef\client.rb "trusted_certs_dir 'C:/chef/trusted_certs'"
 Add-Content C:\chef\client.rb "node_name '${var.account_name}_${var.instance_name}'"
 Add-Content C:\chef\client.rb "validation_key 'C:\chef\${var.account_name}-validation.pem'"
 Add-Content C:\chef\client.rb "validation_client_name '${var.account_name}-validation'"
-
-& C:\opscode\chef\bin\chef-client.bat
+Add-Content C:\chef\attributes.json '{ "policy_name": "${var.chef_policy}", "policy_group": "${var.chef_policy_group}" }'
+Start-Sleep 60
+& C:\opscode\chef\bin\chef-client.bat -j C:\chef\attributes.json
 </powershell>
 EOF
 
