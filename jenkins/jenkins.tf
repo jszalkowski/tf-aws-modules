@@ -1,12 +1,5 @@
 data "aws_caller_identity" "current" {}
 
-data "aws_security_group" "ssh" {
-  filter {
-    name   = "tag:Name"
-    values = ["infra-ssh"]
-  }
-}
-
 variable "account_name" {}
 variable "subnet" {}
 variable "vpc" {}
@@ -14,6 +7,10 @@ variable "vpc_cidr" {}
 
 output "instance_profile" {
   value = "${module.iam_instance_profile_jenkins.profile_name}"
+}
+
+output "jenkins_sg" {
+  value = "${module.sg_jenkins.sg_id}"
 }
 
 module "jenkins_bucket" {
@@ -106,9 +103,9 @@ module "iam_role_jenkins_attach_policy" {
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
-module "iam_role_jenkins_attach_base_infra_policy" {
+module "iam_role_jenkins_attach_base_policy" {
   role_name  = "${module.iam_role_jenkins.role_name}"
-  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/base_infra"
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/base"
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
