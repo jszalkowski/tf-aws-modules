@@ -168,14 +168,14 @@ module "iam_policy_base" {
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:s3:::${var.account_name}-*"
+                "arn:aws:s3:::${var.account_name}-*",
+                "arn:aws:s3:::${var.account_name_infra_bucket}-infra"
             ]
         },
         {
             "Action": [
                 "s3:PutObject",
-                "s3:GetObject",
-                "s3:ListBucket"
+                "s3:GetObject"
             ],
             "Effect": "Allow",
             "Resource": [
