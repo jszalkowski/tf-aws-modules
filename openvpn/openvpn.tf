@@ -1,22 +1,15 @@
-variable "account_id" {}
-variable "account_name" {}
-variable "ami_id" {}
-variable "aws_keypair" {}
-variable "aws_region" {}
-variable "chef_policy" {}
-variable "chef_policy_group" {}
-variable "chef_server" {}
-variable "chef_server_url" {}
+data "aws_caller_identity" "current" {}
 
-variable "instance_type" {
-  default = "t2.medium"
+variable "account_name" {}
+variable "vpc" {}
+
+output "instance_profile" {
+  value = "${module.iam_instance_profile_openvpn.profile_name}"
 }
 
-variable "lvm_snapshot_id" {}
-
-variable "subnet" {}
-variable "sg_ssh_id" {}
-variable "vpc" {}
+output "openvpn_sg" {
+  value = "${module.sg_openvpn.sg_id}"
+}
 
 module "openvpn_bucket" {
   bucket_logging = "${var.account_name}-logs-s3"
@@ -96,9 +89,9 @@ module "iam_role_openvpn_attach_policy" {
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
-module "iam_role_openvpn_attach_base_infra_policy" {
+module "iam_role_openvpn_attach_base_policy" {
   role_name  = "${module.iam_role_openvpn.role_name}"
-  policy_arn = "arn:aws:iam::${var.account_id}:policy/base_infra"
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/base"
   source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
@@ -106,24 +99,4 @@ module "iam_instance_profile_openvpn" {
   profile_name = "openvpn"
   roles        = ["${module.iam_role_openvpn.role_name}"]
   source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
-}
-
-module "ec2_openvpn" {
-  account_name           = "${var.account_name}"
-  ami_id                 = "${var.ami_id}"
-  aws_keypair            = "${var.aws_keypair}"
-  aws_region             = "${var.aws_region}"
-  chef_policy            = "${var.chef_policy}"
-  chef_policy_group      = "${var.chef_policy_group}"
-  chef_server            = "${var.chef_server}"
-  chef_server_url        = "${var.chef_server_url}"
-  instance_name          = "openvpn"
-  instance_profile       = "${module.iam_instance_profile_openvpn.profile_name}"
-  instance_type          = "${var.instance_type}"
-  lvm_snapshot_id        = "${var.lvm_snapshot_id}"
-  snapshots              = "yes"
-  subnet                 = "${var.subnet}"
-  termination_protection = "true"
-  vpc_security_group_ids = ["${module.sg_openvpn.sg_id}", "${var.sg_ssh_id}"]
-  source                 = "github.com/Trility/tf-aws-modules//ec2_instance"
 }
