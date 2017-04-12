@@ -9,6 +9,10 @@ output "instance_profile" {
   value = "${module.iam_instance_profile_jenkins.profile_name}"
 }
 
+output "jenkins_role" {
+  value = "${module.iam_role_jenkins.role_name}"
+}
+
 output "jenkins_sg" {
   value = "${module.sg_jenkins.sg_id}"
 }
