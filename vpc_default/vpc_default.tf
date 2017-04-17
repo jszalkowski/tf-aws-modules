@@ -46,7 +46,7 @@ resource "aws_security_group" "default" {
   }
 }
 
-resource "aws_security_group_rule" "default" {
+resource "aws_security_group_rule" "default-1" {
   type              = "ingress"
   from_port         = 0
   to_port           = 0
@@ -55,7 +55,7 @@ resource "aws_security_group_rule" "default" {
   self              = "true"
 }
 
-resource "aws_security_group_rule" "default-1" {
+resource "aws_security_group_rule" "default" {
   type              = "egress"
   cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 0
