@@ -46,14 +46,14 @@ module "iam_group_admins" {
 }
 
 module "iam_group_power_users" {
-  group_memebers = ["${var.power_users}"]
+  group_members = ["${var.power_users}"]
   group_name     = "${var.account_name}_power_users"
   policy_arn     = "arn:aws:iam::aws:policy/PowerUserAccess"
   source         = "github.com/Trility/tf-aws-modules//iam_group"
 }
 
 module "iam_group_read_only_users" {
-  group_memebers = ["${var.read_only_users}"]
+  group_members = ["${var.read_only_users}"]
   group_name     = "${var.account_name}_read_only_users"
   policy_arn     = "arn:aws:iam::aws:policy/ReadOnlyAccess"
   source         = "github.com/Trility/tf-aws-modules//iam_group"
