@@ -146,6 +146,13 @@ module "iam_policy_user_management" {
                 "*"
             ],
             "Sid": "AllowUsersToViewStatsOnConsole"
+        },
+        {
+            "Sid": "BlockAnyAccessOtherThanAboveUnlessSignedInWithMFA",
+            "Effect": "Deny",
+            "NotAction": "iam:*",
+            "Resource": "*",
+            "Condition":{ "BoolIfExists":{ "aws:MultiFactorAuthPresent": "false"}}
         }
     ],
     "Version": "2012-10-17"
