@@ -64,7 +64,7 @@ resource "aws_security_group_rule" "default-1" {
   protocol          = -1
 }
 
-resource "aws_subnet" "defaulta" {
+resource "aws_subnet" "default0" {
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "172.31.0.0/20"
   map_public_ip_on_launch = "true"
@@ -74,7 +74,7 @@ resource "aws_subnet" "defaulta" {
   }
 }
 
-resource "aws_subnet" "defaultb" {
+resource "aws_subnet" "default16" {
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "172.31.16.0/20"
   map_public_ip_on_launch = "true"
@@ -84,7 +84,7 @@ resource "aws_subnet" "defaultb" {
   }
 }
 
-resource "aws_subnet" "defaultc" {
+resource "aws_subnet" "default32" {
   vpc_id                  = "${aws_vpc.default.id}"
   cidr_block              = "172.31.32.0/20"
   map_public_ip_on_launch = "true"
