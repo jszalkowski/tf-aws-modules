@@ -19,6 +19,14 @@ variable "developers" {
   type = "list"
 }
 
+variable "power_users" {
+  type = "list"
+}
+
+variable "read_only_users" {
+  type = "list"
+}
+
 module "password_settings" {
   source = "github.com/Trility/tf-aws-modules//iam_account_password_policy"
 }
@@ -35,6 +43,20 @@ module "iam_group_admins" {
   group_name    = "${var.account_name}_admins"
   policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
   source        = "github.com/Trility/tf-aws-modules//iam_group"
+}
+
+module "iam_group_power_users" {
+  group_memebers = ["${var.power_users}"]
+  group_name     = "${var.account_name}_power_users"
+  policy_arn     = "arn:aws:iam::aws:policy/PowerUserAccess"
+  source         = "github.com/Trility/tf-aws-modules//iam_group"
+}
+
+module "iam_group_read_only_users" {
+  group_memebers = ["${var.read_only_users}"]
+  group_name     = "${var.account_name}_read_only_users"
+  policy_arn     = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  source         = "github.com/Trility/tf-aws-modules//iam_group"
 }
 
 module "iam_billing_admins" {
