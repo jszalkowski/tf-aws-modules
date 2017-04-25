@@ -1,10 +1,18 @@
-data "aws_ip_ranges" "ec2" {
-  regions  = ["${var.aws_region}"]
-  services = ["ec2"]
+data "aws_region" "current" {
+  current = true
 }
 
-variable "aws_region" {}
-variable "vpc" {}
+data "aws_ip_ranges" "ec2" {
+  regions  = ["${data.aws_region.current}"]
+  services = ["amazon", "ec2"]
+}
+
+data "aws_vpc" "infra" {
+  filter {
+    name   = "tag:Name"
+    values = ["infra"]
+  }
+}
 
 module "iam_role_opsworks_cm_ec2" {
   role_name = "aws-opsworks-cm-ec2"
@@ -46,15 +54,24 @@ module "iam_role_policy_attachment_server" {
 module "sg_opsworks_cm" {
   group_name        = "opsworks-cm"
   group_description = "opsworks-cm"
-  vpc_id            = "${var.vpc}"
+  vpc_id            = "${data.aws_vpc.infra.id}"
   source            = "github.com/Trility/tf-aws-modules//sg"
 }
 
-module "sg_opsworks_cm_ingress_cidr_rule" {
+module "sg_opsworks_cm_ingress_443_rule" {
   rule_type   = "ingress"
   from_port   = 443
   to_port     = 443
   cidr_blocks = ["${data.aws_ip_ranges.ec2.cidr_blocks}"]
+  sg_id       = "${module.sg_opsworks_cm.sg_id}"
+  source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
+}
+
+module "sg_opsworks_cm_ingress_8443_rule" {
+  rule_type   = "ingress"
+  from_port   = 8443
+  to_port     = 8443
+  cidr_blocks = ["${data.aws_vpc.infra.cidr_block}"]
   sg_id       = "${module.sg_opsworks_cm.sg_id}"
   source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
@@ -64,6 +81,7 @@ module "sg_opsowrks_cm_egress_cidr_rule" {
   from_port   = 0
   to_port     = 65535
   cidr_blocks = ["0.0.0.0/0"]
+  protocol    = "all"
   sg_id       = "${module.sg_opsworks_cm.sg_id}"
   source      = "github.com/Trility/tf-aws-modules//sg_rule_cidr"
 }
