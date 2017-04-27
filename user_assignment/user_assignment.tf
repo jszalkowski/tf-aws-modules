@@ -1,7 +1,5 @@
 variable "account_name" {}
 
-variable "account_name_infra_bucket" {}
-
 variable "group_name" {}
 
 variable "policy_arn" {}
