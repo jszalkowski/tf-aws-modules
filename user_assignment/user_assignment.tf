@@ -1,3 +1,7 @@
+output "group_name" {
+  value = "${var.group_name}"
+}
+
 variable "account_name" {}
 
 variable "group_name" {}
