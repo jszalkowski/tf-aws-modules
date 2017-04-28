@@ -3,74 +3,8 @@ data "aws_iam_account_alias" "current" {}
 variable "account_name" {}
 variable "account_name_infra_bucket" {}
 
-variable "billing_admins" {
-  type = "list"
-}
-
-variable "admins" {
-  type = "list"
-}
-
-variable "super_admins" {
-  type = "list"
-}
-
-variable "developers" {
-  type = "list"
-}
-
-variable "power_users" {
-  type = "list"
-}
-
-variable "read_only_users" {
-  type = "list"
-}
-
 module "password_settings" {
   source = "github.com/Trility/tf-aws-modules//iam_account_password_policy"
-}
-
-module "iam_group_super_admins" {
-  group_members = ["${var.super_admins}"]
-  group_name    = "${var.account_name}_super_admins"
-  policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
-  source        = "github.com/Trility/tf-aws-modules//iam_group"
-}
-
-module "iam_group_admins" {
-  group_members = ["${var.admins}"]
-  group_name    = "${var.account_name}_admins"
-  policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
-  source        = "github.com/Trility/tf-aws-modules//iam_group"
-}
-
-module "iam_group_power_users" {
-  group_members = ["${var.power_users}"]
-  group_name     = "${var.account_name}_power_users"
-  policy_arn     = "arn:aws:iam::aws:policy/PowerUserAccess"
-  source         = "github.com/Trility/tf-aws-modules//iam_group"
-}
-
-module "iam_group_read_only_users" {
-  group_members = ["${var.read_only_users}"]
-  group_name     = "${var.account_name}_read_only_users"
-  policy_arn     = "arn:aws:iam::aws:policy/ReadOnlyAccess"
-  source         = "github.com/Trility/tf-aws-modules//iam_group"
-}
-
-module "iam_billing_admins" {
-  group_members = ["${var.billing_admins}"]
-  group_name    = "${var.account_name}_billing_admins"
-  policy_arn    = "arn:aws:iam::aws:policy/job-function/Billing"
-  source        = "github.com/Trility/tf-aws-modules//iam_group"
-}
-
-module "iam_group_developers" {
-  group_members = ["${var.developers}"]
-  group_name    = "${var.account_name}_developers"
-  policy_arn    = "arn:aws:iam::aws:policy/AdministratorAccess"
-  source        = "github.com/Trility/tf-aws-modules//iam_group"
 }
 
 module "iam_policy_user_management" {
@@ -161,8 +95,8 @@ EOF
 }
 
 module "attach_user_management_to_billing" {
-  group      = "${module.iam_billing_admins.group_name}"
-  policy_arn = "${module.iam_policy_user_management.policy_arn}"
+  group      = "${FIXME module.iam_billing_admins.group_name}"
+  policy_arn = "${FIXME module.iam_policy_user_management.policy_arn}"
   source     = "github.com/Trility/tf-aws-modules//iam_group_policy_attachment"
 }
 
