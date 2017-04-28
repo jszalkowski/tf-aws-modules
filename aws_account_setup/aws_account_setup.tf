@@ -94,12 +94,6 @@ module "iam_policy_user_management" {
 EOF
 }
 
-module "attach_user_management_to_billing" {
-  group      = "${FIXME module.iam_billing_admins.group_name}"
-  policy_arn = "${FIXME module.iam_policy_user_management.policy_arn}"
-  source     = "github.com/Trility/tf-aws-modules//iam_group_policy_attachment"
-}
-
 module "cloudtrail" {
   account_name = "${var.account_name}"
   source       = "github.com/Trility/tf-aws-modules//cloudtrail"
@@ -185,9 +179,9 @@ module "iam_policy_base" {
                 "opsworks-cm:AssociateNode",
                 "opsworks-cm:DescribeNodeAssociationStatus",
                 "opsworks-cm:DescribeServers",
-                "ssm:DescribeAssociation",
+                "ssm:Describe*",
                 "ssm:GetDocument",
-                "ssm:ListAssociations",
+                "ssm:List*",
                 "ssm:UpdateAssociationStatus",
                 "ssm:UpdateInstanceInformation"
             ],
