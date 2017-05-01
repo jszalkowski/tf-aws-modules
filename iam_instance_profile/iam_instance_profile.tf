@@ -1,7 +1,6 @@
 variable "profile_name" {}
 
-variable "roles" {
-  type = "list"
+variable "role" {
 }
 
 output "profile_name" {
