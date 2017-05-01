@@ -209,6 +209,6 @@ module "iam_role_base_attach_policy" {
 
 module "iam_instance_profile_base" {
   profile_name = "base"
-  role        = "${module.iam_role_base.role_name}"
+  roles        = ["${module.iam_role_base.role_name}"]
   source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
 }
