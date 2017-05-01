@@ -115,6 +115,6 @@ module "iam_role_jenkins_attach_base_policy" {
 
 module "iam_instance_profile_jenkins" {
   profile_name = "jenkins"
-  role         = ["${module.iam_role_jenkins.role_name}"]
+  role         = "${module.iam_role_jenkins.role_name}"
   source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
 }

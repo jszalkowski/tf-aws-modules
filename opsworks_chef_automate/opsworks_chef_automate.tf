@@ -42,7 +42,7 @@ module "iam_role_policy_attachment_s3" {
 
 module "iam_instance_profile_opsworks_cm" {
   profile_name = "aws-opsworks-cm-ec2"
-  role         = ["${module.iam_role_opsworks_cm_ec2.role_name}"]
+  role         = "${module.iam_role_opsworks_cm_ec2.role_name}"
   source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
 }
 

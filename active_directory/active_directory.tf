@@ -46,7 +46,7 @@ module "iam_role_policy_attachment_base" {
 
 module "iam_instance_profile_windows" {
   profile_name = "windows"
-  role         = ["${module.iam_role_windows.role_name}"]
+  role         = "${module.iam_role_windows.role_name}"
   source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
 }
 

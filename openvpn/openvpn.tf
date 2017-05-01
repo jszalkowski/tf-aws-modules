@@ -97,6 +97,6 @@ module "iam_role_openvpn_attach_base_policy" {
 
 module "iam_instance_profile_openvpn" {
   profile_name = "openvpn"
-  role         = ["${module.iam_role_openvpn.role_name}"]
+  role         = "${module.iam_role_openvpn.role_name}"
   source       = "github.com/Trility/tf-aws-modules//iam_instance_profile"
 }
