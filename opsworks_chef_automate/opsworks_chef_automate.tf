@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data "aws_region" "current" {
   current = true
 }
@@ -18,6 +20,12 @@ module "iam_role_opsworks_cm_ec2" {
   role_name = "aws-opsworks-cm-ec2"
   role_path = "/service-role/"
   source    = "github.com/Trility/tf-aws-modules//iam_role"
+}
+
+module "iam_role_policy_attachment_base" {
+  policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/base"
+  role_name  = "${module.iam_role_opsworks_cm_ec2.role_name}"
+  source     = "github.com/Trility/tf-aws-modules//iam_role_policy_attachment"
 }
 
 module "iam_role_policy_attachment_ssm" {
