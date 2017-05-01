@@ -1,7 +1,6 @@
 variable "profile_name" {}
 
-variable "roles" {
-  type = "list"
+variable "role" {
 }
 
 output "profile_name" {
@@ -9,6 +8,6 @@ output "profile_name" {
 }
 
 resource "aws_iam_instance_profile" "profile" {
-  name  = "${var.profile_name}"
-  roles = ["${var.roles}"]
+  name = "${var.profile_name}"
+  role = "${var.role}"
 }
