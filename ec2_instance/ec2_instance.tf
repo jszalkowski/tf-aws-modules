@@ -62,12 +62,6 @@ resource "aws_instance" "ec2_instance" {
   ami                     = "${var.ami_id}"
   disable_api_termination = "${var.termination_protection}"
 
-  root_block_device {
-    delete_on_termination = true
-    volume_size           = "${var.ebs_root_size}"
-    volume_type           = "gp2"
-  }
-
   ebs_block_device {
     delete_on_termination = true
     device_name           = "/dev/sdb"
@@ -76,17 +70,29 @@ resource "aws_instance" "ec2_instance" {
     volume_type           = "gp2"
   }
 
-  key_name             = "${var.aws_keypair}"
   iam_instance_profile = "${var.instance_profile}"
   instance_type        = "${var.instance_type}"
-  subnet_id            = "${var.subnet}"
+
+  lifecycle {
+    "ignore_changes" = ["ami"]
+  }
+
+  key_name = "${var.aws_keypair}"
+
+  root_block_device {
+    delete_on_termination = true
+    volume_size           = "${var.ebs_root_size}"
+    volume_type           = "gp2"
+  }
+
+  subnet_id = "${var.subnet}"
 
   tags {
     Name      = "${var.instance_name}"
     Snapshots = "${var.snapshots}"
   }
 
-  user_data = "${var.userdata}"
-
+  user_data              = "${var.userdata}"
+  volume_tags            = "${var.instance_name}"
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
 }
