@@ -20,7 +20,7 @@ variable "lvm_opt_size" {
   default = 20
 }
 
-variable "lvm_snapshot_id" {}
+//variable "lvm_snapshot_id" {}
 
 variable "lvm_var_size" {
   default = 20
@@ -65,9 +65,10 @@ resource "aws_instance" "ec2_instance" {
   ebs_block_device {
     delete_on_termination = true
     device_name           = "/dev/sdb"
-    snapshot_id           = "${var.lvm_snapshot_id}"
-    volume_size           = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 20}"
-    volume_type           = "gp2"
+
+    //    snapshot_id           = "${var.lvm_snapshot_id}"
+    volume_size = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 20}"
+    volume_type = "gp2"
   }
 
   iam_instance_profile = "${var.instance_profile}"
