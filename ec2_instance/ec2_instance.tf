@@ -92,7 +92,11 @@ resource "aws_instance" "ec2_instance" {
     Snapshots = "${var.snapshots}"
   }
 
-  user_data              = "${var.userdata}"
-  volume_tags            = "${var.instance_name}"
+  user_data = "${var.userdata}"
+
+  volume_tags {
+    Name = "${var.instance_name}"
+  }
+
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
 }
