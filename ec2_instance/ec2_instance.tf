@@ -17,8 +17,6 @@ variable "instance_profile" {}
 variable "instance_type" {}
 
 variable "lifecycle_ignore" {
-  type = "list"
-
   default = ["ami", "ebs_block_device"]
 }
 
