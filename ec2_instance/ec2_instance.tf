@@ -20,8 +20,6 @@ variable "lvm_opt_size" {
   default = 20
 }
 
-variable "lvm_snapshot_id" {}
-
 variable "lvm_var_size" {
   default = 20
 }
@@ -62,24 +60,29 @@ resource "aws_instance" "ec2_instance" {
   ami                     = "${var.ami_id}"
   disable_api_termination = "${var.termination_protection}"
 
+  ebs_block_device {
+    delete_on_termination = true
+    device_name           = "/dev/sdb"
+    volume_size           = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 20}"
+    volume_type           = "gp2"
+  }
+
+  iam_instance_profile = "${var.instance_profile}"
+  instance_type        = "${var.instance_type}"
+
+  lifecycle {
+    "ignore_changes" = ["ami"]
+  }
+
+  key_name = "${var.aws_keypair}"
+
   root_block_device {
     delete_on_termination = true
     volume_size           = "${var.ebs_root_size}"
     volume_type           = "gp2"
   }
 
-  ebs_block_device {
-    delete_on_termination = true
-    device_name           = "/dev/sdb"
-    snapshot_id           = "${var.lvm_snapshot_id}"
-    volume_size           = "${(var.lvm_opt_size) + (var.lvm_var_size) + (var.lvm_varlog_size) + (var.lvm_varlogaudit_size) + (var.lvm_home_size) + (var.lvm_tmp_size) + 20}"
-    volume_type           = "gp2"
-  }
-
-  key_name             = "${var.aws_keypair}"
-  iam_instance_profile = "${var.instance_profile}"
-  instance_type        = "${var.instance_type}"
-  subnet_id            = "${var.subnet}"
+  subnet_id = "${var.subnet}"
 
   tags {
     Name      = "${var.instance_name}"
@@ -87,6 +90,10 @@ resource "aws_instance" "ec2_instance" {
   }
 
   user_data = "${var.userdata}"
+
+  volume_tags {
+    Name = "${var.instance_name}"
+  }
 
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
 }
