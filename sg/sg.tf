@@ -7,9 +7,10 @@ output "sg_id" {
 }
 
 resource "aws_security_group" "sg" {
-  name = "${var.group_name}"
+  name        = "${var.group_name}"
   description = "${var.group_description}"
-  vpc_id = "${var.vpc_id}"
+  vpc_id      = "${var.vpc_id}"
+
   tags {
     Name = "${var.group_name}"
   }

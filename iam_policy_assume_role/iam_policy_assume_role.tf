@@ -5,13 +5,14 @@ variable "assume_role" {}
 variable "account_number" {}
 
 output "policy_arn" {
-    value = "${module.iam_policy_assume_role.policy_arn}"
+  value = "${module.iam_policy_assume_role.policy_arn}"
 }
 
 module "iam_policy_assume_role" {
-    policy_name        = "${var.policy_name}"
-    policy_description = "Policy to allow users to assume ${var.assume_role}"
-    policy             = <<EOF
+  policy_name        = "${var.policy_name}"
+  policy_description = "Policy to allow users to assume ${var.assume_role}"
+
+  policy = <<EOF
 {
     "Statement": [
         {
@@ -27,5 +28,6 @@ module "iam_policy_assume_role" {
     "Version": "2012-10-17"
 }
 EOF
-    source             = "github.com/Trility/tf-aws-modules//iam_policy"
+
+  source = "github.com/Trility/tf-aws-modules//iam_policy"
 }

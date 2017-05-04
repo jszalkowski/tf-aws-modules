@@ -33,13 +33,13 @@ resource "aws_s3_bucket" "bucket" {
   acl    = "${var.bucket_acl}"
 
   lifecycle_rule {
-    prefix = "${var.lifecycle_prefix}"
+    prefix  = "${var.lifecycle_prefix}"
     enabled = "${var.lifecycle_enabled}"
 
     expiration {
       days = "${var.lifecycle_days}"
     }
-  } 
+  }
 
   logging {
     target_bucket = "${var.bucket_logging}"
