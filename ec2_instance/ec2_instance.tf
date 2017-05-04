@@ -16,10 +16,6 @@ variable "instance_profile" {}
 
 variable "instance_type" {}
 
-variable "lifecycle_ignore" {
-  default = ["ami", "ebs_block_device"]
-}
-
 variable "lvm_opt_size" {
   default = 20
 }
@@ -75,7 +71,7 @@ resource "aws_instance" "ec2_instance" {
   instance_type        = "${var.instance_type}"
 
   lifecycle {
-    "ignore_changes" = ["${var.lifecycle_ignore}"]
+    "ignore_changes" = ["ami", "ebs_block_device"]
   }
 
   key_name = "${var.aws_keypair}"
