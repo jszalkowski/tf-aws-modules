@@ -73,5 +73,9 @@ Start-Sleep 60
 </powershell>
 EOF
 
+  volume_tags {
+    Name = "${var.instance_name}"
+  }
+
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
 }
