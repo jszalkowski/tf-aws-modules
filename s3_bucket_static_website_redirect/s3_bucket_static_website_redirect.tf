@@ -10,6 +10,10 @@ output "website_endpoint_url" {
   value = "${aws_s3_bucket.bucket.website_endpoint}"
 }
 
+output "s3_hosted_zone_id" {
+  value = "${aws_s3_bucket.bucket.hosted_zone_id}"
+}
+
 resource "aws_s3_bucket" "bucket" {
   bucket = "${var.bucket_name}"
   acl = "public-read"
