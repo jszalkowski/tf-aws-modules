@@ -20,6 +20,10 @@ variable "locations" {
   type = "list"
 }
 
+variable "origin_protocol_policy" {
+  default = "match-viewer"
+}
+
 variable "logging_bucket" {}
 variable "name" {}
 variable "price_class" {}
@@ -70,7 +74,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     custom_origin_config {
       http_port              = 80
       https_port             = 443
-      origin_protocol_policy = "match-viewer"
+      origin_protocol_policy = "${var.origin_protocol_policy}"
       origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
     }
 
