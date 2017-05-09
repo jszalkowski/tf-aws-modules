@@ -8,7 +8,7 @@ variable "cache_allowed_methods" {
   default = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
 }
 
-variable "certificate_id" {}
+variable "certificate_arn" {}
 
 variable "domain_name" {}
 
@@ -93,7 +93,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   viewer_certificate {
-    iam_certificate_id       = "${var.certificate_id}"
+    acm_certificate_arn      = "${var.certificate_arn}"
     minimum_protocol_version = "TLSv1"
     ssl_support_method       = "sni-only"
   }
