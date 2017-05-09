@@ -16,7 +16,7 @@ output "s3_hosted_zone_id" {
 
 resource "aws_s3_bucket" "bucket" {
   bucket = "${var.bucket_name}"
-  acl = "public-read"
+  acl    = "public-read"
 
   website {
     redirect_all_requests_to = "${var.redirect_address}"
