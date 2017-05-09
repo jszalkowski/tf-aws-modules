@@ -6,8 +6,8 @@ output "bucket_id" {
   value = "${aws_s3_bucket.bucket.id}"
 }
 
-output "website_endpoint_url" {
-  value = "${aws_s3_bucket.bucket.website_endpoint}"
+output "website_domain_url" {
+  value = "${aws_s3_bucket.bucket.website_domain}"
 }
 
 output "s3_hosted_zone_id" {
