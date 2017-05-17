@@ -32,6 +32,10 @@ output "subnet_private_c" {
   value = "${module.subnet_private_c.subnet_id}"
 }
 
+output "nat_gateway" {
+  value = "${module.nat_private.nat_id}"
+}
+
 module "vpc" {
   cidr_block = "${var.cidr_block}"
   vpc_name   = "${var.vpc_name}"
