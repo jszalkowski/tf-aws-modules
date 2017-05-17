@@ -32,7 +32,7 @@ output "subnet_private_c" {
   value = "${module.subnet_private_c.subnet_id}"
 }
 
-output "nat_gateway" {
+output "nat_id" {
   value = "${module.nat_private.nat_id}"
 }
 
