@@ -36,6 +36,14 @@ output "nat_id" {
   value = "${module.nat_private.nat_id}"
 }
 
+output "vpc_name" {
+  value = "${module.vpc.vpc_name}"
+}
+
+output "infra_private_rt_name" {
+  value = "${module.route_table_private.rt_name}"
+}
+
 module "vpc" {
   cidr_block = "${var.cidr_block}"
   vpc_name   = "${var.vpc_name}"
