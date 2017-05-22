@@ -10,10 +10,6 @@ output "policy_arn" {
   value = "${aws_iam_policy.policy.arn}"
 }
 
-output "policy_name" {
-  value = "${lookup(var.policy_name)}"
-}
-
 resource "aws_iam_policy" "policy" {
   name        = "${var.policy_name}"
   description = "${var.policy_description}"

@@ -3,10 +3,6 @@ data "aws_iam_account_alias" "current" {}
 variable "account_name" {}
 variable "account_name_infra_bucket" {}
 
-output "policy_name" {
-  value = "${lookup(var.policy_name)}"
-}
-
 module "password_settings" {
   source = "github.com/Trility/tf-aws-modules//iam_account_password_policy"
 }
@@ -14,7 +10,7 @@ module "password_settings" {
 module "iam_policy_user_management" {
   policy_name        = "user_management"
   policy_description = "user_management"
-  source             = "github.com/Trility/tf-aws-modules?ref=0010_account_setup//iam_policy"
+  source             = "github.com/Trility/tf-aws-modules//iam_policy"
 
   policy = <<EOF
 {
@@ -118,7 +114,7 @@ module "backup_bucket" {
 module "iam_policy_base" {
   policy_name        = "base"
   policy_description = "base"
-  source             = "github.com/Trility/tf-aws-modules?ref=0010_account_setup//iam_policy"
+  source             = "github.com/Trility/tf-aws-modules//iam_policy"
 
   policy = <<POLICY
 {
