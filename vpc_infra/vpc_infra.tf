@@ -36,6 +36,10 @@ output "nat_id" {
   value = "${module.nat_private.nat_id}"
 }
 
+output "eip_nat" {
+ value = "${module.eip_nat.eip_public_ip}"
+}
+
 module "vpc" {
   cidr_block = "${var.cidr_block}"
   vpc_name   = "${var.vpc_name}"
