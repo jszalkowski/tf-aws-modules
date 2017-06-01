@@ -2,6 +2,7 @@ data "aws_caller_identity" "current" {}
 
 variable "account_name" {}
 variable "vpc" {}
+variable "zipfile_source" {}
 
 output "instance_profile" {
   value = "${module.iam_instance_profile_openvpn.profile_name}"
@@ -16,6 +17,13 @@ module "openvpn_bucket" {
   bucket_name    = "${var.account_name}-openvpn"
   logging_prefix = "${var.account_name}-openvpn/"
   source         = "github.com/Trility/tf-aws-modules//s3_bucket"
+}
+
+module "openvpn_zipfile_password" {
+  bucket        = "${module.openvpn_bucket.bucket_id}"
+  key           = "zipfile"
+  object_source = "${var.zipfile_source}"
+  source        = "github.com/Trility/tf-aws-modules//s3_bucket_object_source"
 }
 
 module "sg_openvpn" {
