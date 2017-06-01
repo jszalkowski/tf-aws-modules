@@ -1,5 +1,3 @@
-data "aws_iam_account_alias" "current" {}
-
 variable "account_name" {}
 variable "account_name_infra_bucket" {}
 
@@ -21,7 +19,7 @@ module "iam_policy_user_management" {
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:iam::${data.aws_iam_account_alias.current.account_alias}:mfa/$${aws:username}"
+                "arn:aws:iam::${var.account_name}:mfa/$${aws:username}"
             ],
             "Sid": "AllowUsersToCreateDeleteTheirOwnVirtualMFADevices"
         },
@@ -34,7 +32,7 @@ module "iam_policy_user_management" {
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:iam::${data.aws_iam_account_alias.current.account_alias}:user/$${aws:username}"
+                "arn:aws:iam::${var.account_name}:user/$${aws:username}"
             ],
             "Sid": "AllowUsersToEnableSyncDisableTheirOwnMFADevices"
         },
@@ -44,7 +42,7 @@ module "iam_policy_user_management" {
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:iam::${data.aws_iam_account_alias.current.account_alias}:mfa/*"
+                "arn:aws:iam::${var.account_name}:mfa/*"
             ],
             "Sid": "AllowUsersToListVirtualMFADevices"
         },
@@ -54,7 +52,7 @@ module "iam_policy_user_management" {
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:iam::${data.aws_iam_account_alias.current.account_alias}:user/*"
+                "arn:aws:iam::${var.account_name}:user/*"
             ],
             "Sid": "AllowUsersToListUsersOnConsole"
         },
@@ -66,7 +64,7 @@ module "iam_policy_user_management" {
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:iam::${data.aws_iam_account_alias.current.account_alias}:user/$${aws:username}"
+                "arn:aws:iam::${var.account_name}:user/$${aws:username}"
             ],
             "Sid": "AllowUsersToManageCredentials"
         },

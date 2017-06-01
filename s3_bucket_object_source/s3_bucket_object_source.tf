@@ -1,0 +1,11 @@
+variable "bucket" {}
+
+variable "key" {}
+
+variable "source" {}
+
+resource "aws_s3_bucket_object" "object" {
+  bucket = "${var.bucket}"
+  key    = "${var.key}"
+  source = "${var.source}"
+}
